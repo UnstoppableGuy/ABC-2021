@@ -1,0 +1,2 @@
+add_executable(Doctest_tests_run DecoderTests.cpp ExecutorTests.cpp)
+target_link_libraries(Doctest_tests_run riscv_lib)
