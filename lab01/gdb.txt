@@ -1,9 +1,9 @@
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+1. set args
+2. b or break
+3. n or next
+4. s or set
+5. c or continue
+6. print(name)
+7. display + name
+8. info locals
+9. q or quit

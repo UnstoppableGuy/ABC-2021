@@ -7,3 +7,6 @@ test_ll_cycle
 lfsr
 bit_ops
 vector-test
+commands.sh
+commands_dgb.txt
+speciality

@@ -1,15 +1,16 @@
 #include <iostream>
 
 /* Изменяйте только эти 4 переменные */
-constexpr int V0 = 0;
-constexpr int V1 = -1;
-constexpr int V2 = 0;
-constexpr int V3 = 0;
+constexpr int V0 = 1;
+constexpr int V1 = 10;
+constexpr int V2 = -7;
+constexpr int V3 = 3;
 
 /*
  * Точка входа с++ программы. Что передается через аргументы?
  */
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     /* 
      * Вывод сообщения на консоль
      */
@@ -68,11 +69,14 @@ int main(int argc, char** argv) {
     /* ternary operator */
     const std::string s = (!V3 || V3 == 6) ? "МТЗ" : "БАТЭ";
 
-    /* if statement */
-    if (V2 + V3 < 0) {
-	std::cout << s << " чемпион!" << std::endl;
-    } else {
-	std::cout << "Вперед " << s << '!' << std::endl;
+        /* if statement */
+    if (V2 + V3 < 0)
+    {
+        std::cout << s << " чемпион!" << std::endl;
+    }
+    else
+    {
+        std::cout << "Вперед " << s << '!' << std::endl;
     }
 
     return 0;
