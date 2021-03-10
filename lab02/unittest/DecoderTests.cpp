@@ -221,7 +221,7 @@ TEST_SUITE("Decoder"){
             CHECK(instruction->_type == IType::Jr);
         }
     }
-
+    //Needed to release
     /* YOUR CODE HERE */
 }
 

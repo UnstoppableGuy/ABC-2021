@@ -11,15 +11,23 @@
 class Cpu
 {
 public:
-    Cpu(Memory& mem)
+    Cpu(Memory &mem)
         : _mem(mem)
     {
-
     }
 
     void ProcessInstruction()
     {
-        /* YOUR CODE HERE */
+
+        InstructionPtr instrDec = _decoder.Decode(_mem.Request(_ip));
+        _rf.Read(instrDec);
+        _csrf.Read(instrDec);
+        _exe.Execute(instrDec, _ip);
+        _mem.Request(instrDec);
+        _rf.Write(instrDec);
+        _csrf.Write(instrDec);
+        _csrf.InstructionExecuted();
+        _ip = instrDec->_nextIp;
     }
 
     void Reset(Word ip)
@@ -39,8 +47,7 @@ private:
     RegisterFile _rf;
     CsrFile _csrf;
     Executor _exe;
-    Memory& _mem;
+    Memory &_mem;
 };
-
 
 #endif //RISCV_SIM_CPU_H
