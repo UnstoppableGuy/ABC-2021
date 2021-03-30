@@ -1,12 +1,11 @@
 #include "doctest.h"
-
 #include "Instructions.h"
 #include "Decoder.h"
 #include "Executor.h"
 
-constexpr Word IP        = 0x200;
-constexpr Word SRCVAL1   = 1;
-constexpr Word SRCVAL2   = 2;
+constexpr Word IP = 0x200;
+constexpr Word SRCVAL1 = 1;
+constexpr Word SRCVAL2 = 2;
 
 void testAlu(InstructionPtr &instruction, Executor &exe);
 void testR(InstructionPtr &instruction, Executor &exe);
@@ -15,158 +14,178 @@ void testU(InstructionPtr &instruction, Executor &exe);
 void testBranch(InstructionPtr &instruction, Executor &exe);
 void testUJ(InstructionPtr &instruction, Executor &exe);
 
-
-TEST_SUITE("Executor"){
+TEST_SUITE("Executor")
+{
     Decoder _decoder;
     Executor _exe;
-    TEST_CASE("R-Format"){
-        SUBCASE("AND"){
+    TEST_CASE("R-Format")
+    {
+        SUBCASE("AND")
+        {
             auto instruction = _decoder.Decode(AND);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 & SRCVAL2);
         }
 
-        SUBCASE("ADD"){
+        SUBCASE("ADD")
+        {
             auto instruction = _decoder.Decode(ADD);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 + SRCVAL2);
         }
 
-        SUBCASE("OR"){
+        SUBCASE("OR")
+        {
             auto instruction = _decoder.Decode(OR);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 | SRCVAL2);
         }
 
-        SUBCASE("SUB"){
+        SUBCASE("SUB")
+        {
             auto instruction = _decoder.Decode(SUB);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 - SRCVAL2);
         }
 
-        SUBCASE("SLL"){
+        SUBCASE("SLL")
+        {
             auto instruction = _decoder.Decode(SLL);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 << (SRCVAL2 % 32));
         }
 
-        SUBCASE("XOR"){
+        SUBCASE("XOR")
+        {
             auto instruction = _decoder.Decode(XOR);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 ^ SRCVAL2);
         }
 
-        SUBCASE("SRL"){
+        SUBCASE("SRL")
+        {
             auto instruction = _decoder.Decode(SRL);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 >> (SRCVAL2 % 32));
         }
 
-        SUBCASE("SRA"){
+        SUBCASE("SRA")
+        {
             auto instruction = _decoder.Decode(SRA);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, Word((int)SRCVAL1 >> (SRCVAL2 % 32)));
         }
 
-        SUBCASE("SLT"){
+        SUBCASE("SLT")
+        {
             auto instruction = _decoder.Decode(SLT);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, (int)SRCVAL1 < (int)SRCVAL2);
         }
 
-        SUBCASE("SLTU"){
+        SUBCASE("SLTU")
+        {
             auto instruction = _decoder.Decode(SLTU);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 < SRCVAL2);
-
         }
     }
 
-    TEST_CASE("I-Format"){
-        SUBCASE("ANDI"){
+    TEST_CASE("I-Format")
+    {
+        SUBCASE("ANDI")
+        {
             auto instruction = _decoder.Decode(ANDI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 & IMM);
         }
 
-        SUBCASE("ADDI"){
+        SUBCASE("ADDI")
+        {
             auto instruction = _decoder.Decode(ADDI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 + IMM);
         }
 
-        SUBCASE("ORI"){
+        SUBCASE("ORI")
+        {
             auto instruction = _decoder.Decode(ORI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 | IMM);
         }
 
-        SUBCASE("SLLI"){
+        SUBCASE("SLLI")
+        {
             auto instruction = _decoder.Decode(SLLI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 << (IMM % 32));
-
         }
 
-        SUBCASE("XORI"){
+        SUBCASE("XORI")
+        {
             auto instruction = _decoder.Decode(XORI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 ^ IMM);
-
         }
 
-        SUBCASE("SRLI"){
+        SUBCASE("SRLI")
+        {
             auto instruction = _decoder.Decode(SRLI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 >> (IMM % 32));
-
         }
 
-        SUBCASE("SRAI"){
+        SUBCASE("SRAI")
+        {
             auto instruction = _decoder.Decode(SRAI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, Word((int)SRCVAL1 >> (IMM % 32)));
         }
 
-        SUBCASE("SLTIU"){
+        SUBCASE("SLTIU")
+        {
             auto instruction = _decoder.Decode(SLTIU);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 < IMM);
         }
 
-        SUBCASE("SLTI"){
+        SUBCASE("SLTI")
+        {
             auto instruction = _decoder.Decode(SLTI);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_data, (int)SRCVAL1 < (int)IMM);
-
-
         }
 
         // RV32 Load Instructions are also I-Type
-        SUBCASE("LW"){
+        SUBCASE("LW")
+        {
             auto instruction = _decoder.Decode(LW);
             testI(instruction, _exe);
             CHECK_EQ(instruction->_addr, SRCVAL1 + IMM);
         }
     }
 
-    TEST_CASE("U-Format"){
-        SUBCASE("AUIPC"){
+    TEST_CASE("U-Format")
+    {
+        SUBCASE("AUIPC")
+        {
             auto instruction = _decoder.Decode(AUIPC);
             testU(instruction, _exe);
             CHECK_EQ(instruction->_data, IP + (IMM_U << 12u));
         }
 
-        SUBCASE("LUI"){
+        SUBCASE("LUI")
+        {
             auto instruction = _decoder.Decode(LUI);
             testU(instruction, _exe);
             CHECK_EQ(instruction->_data, IMM_U << 12u);
         }
-
     }
 
-    TEST_CASE("S-Format"){
-        SUBCASE("SW"){
+    TEST_CASE("S-Format")
+    {
+        SUBCASE("SW")
+        {
             auto instruction = _decoder.Decode(SW);
             instruction->_src1Val = SRCVAL1;
             instruction->_src2Val = SRCVAL2;
@@ -175,99 +194,119 @@ TEST_SUITE("Executor"){
             CHECK_EQ(instruction->_data, SRCVAL2);
             CHECK_EQ(instruction->_addr, SRCVAL1 + IMM_S);
             CHECK_EQ(instruction->_nextIp, IP + 4);
-
         }
     }
 
-    TEST_CASE("SB-Format"){
-        SUBCASE("BEQ"){
+    TEST_CASE("SB-Format")
+    {
+        SUBCASE("BEQ")
+        {
             auto instruction = _decoder.Decode(BEQ);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, (SRCVAL1 == SRCVAL2 )? IP + IMM_SB : IP + 4);
+            CHECK_EQ(instruction->_nextIp, (SRCVAL1 == SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
 
-        SUBCASE("BGE"){
+        SUBCASE("BGE")
+        {
             auto instruction = _decoder.Decode(BGE);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, ((int)SRCVAL1 >= (int)SRCVAL2)? IP + IMM_SB : IP + 4);
+            CHECK_EQ(instruction->_nextIp, ((int)SRCVAL1 >= (int)SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
 
-        SUBCASE("BGEU"){
+        SUBCASE("BGEU")
+        {
             auto instruction = _decoder.Decode(BGEU);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, (SRCVAL1 >= SRCVAL2 )? IP + IMM_SB : IP + 4);
-
+            CHECK_EQ(instruction->_nextIp, (SRCVAL1 >= SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
 
-        SUBCASE("BNE"){
+        SUBCASE("BNE")
+        {
             auto instruction = _decoder.Decode(BNE);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, (SRCVAL1 != SRCVAL2)? IP + IMM_SB : IP + 4);
-
+            CHECK_EQ(instruction->_nextIp, (SRCVAL1 != SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
 
-        SUBCASE("BLT"){
+        SUBCASE("BLT")
+        {
             auto instruction = _decoder.Decode(BLT);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, ((int)SRCVAL1 < (int)SRCVAL2 )? IP + IMM_SB : IP + 4);
-
+            CHECK_EQ(instruction->_nextIp, ((int)SRCVAL1 < (int)SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
 
-        SUBCASE("BLTU"){
+        SUBCASE("BLTU")
+        {
             auto instruction = _decoder.Decode(BLTU);
             testBranch(instruction, _exe);
-            CHECK_EQ(instruction->_nextIp, (SRCVAL1 < SRCVAL2 )? IP + IMM_SB : IP + 4);
+            CHECK_EQ(instruction->_nextIp, (SRCVAL1 < SRCVAL2) ? IP + IMM_SB : IP + 4);
         }
-
     }
 
-    TEST_CASE("UJ-Format"){
-        SUBCASE("JAL"){
+    TEST_CASE("UJ-Format")
+    {
+        SUBCASE("JAL")
+        {
             auto instruction = _decoder.Decode(JAL);
             testUJ(instruction, _exe);
         }
 
-        SUBCASE("JALR"){
+        SUBCASE("JALR")
+        {
             auto instruction = _decoder.Decode(JALR);
             instruction->_src1Val = SRCVAL1;
             testUJ(instruction, _exe);
 
             CHECK_EQ(instruction->_nextIp, IMM_UJ + SRCVAL1);
-
         }
     }
-    //Needed to release
-    /* YOUR CODE HERE */
+
+    TEST_CASE("R-Format")
+    {
+        SUBCASE("SUB_22")
+        {
+            //constexpr Word SUB = 0b0100000 | 00011 | 00001 | 000 | 01111 | 0110011;
+            Word sub = ((((((((0b0100000 << 5) + 0b00011) << 5) + 0b00001 << 8) + 0b01111) << 7) + 0b0110011));
+            auto instruction = _decoder.Decode(sub);
+            testR(instruction, _exe);
+            CHECK_EQ(instruction->_data, SRCVAL1 - SRCVAL2);
+        }
+    }
 }
 
-void testAlu(InstructionPtr &instruction, Executor &exe){
+void testAlu(InstructionPtr &instruction, Executor &exe)
+{
     instruction->_src1Val = SRCVAL1;
     exe.Execute(instruction, IP);
 
     CHECK_EQ(instruction->_nextIp, IP + 4);
 }
 
-void testR(InstructionPtr &instruction, Executor &exe){
+void testR(InstructionPtr &instruction, Executor &exe)
+{
     instruction->_src2Val = SRCVAL2;
     testAlu(instruction, exe);
 }
 
-void testI(InstructionPtr &instruction, Executor &exe){
+void testI(InstructionPtr &instruction, Executor &exe)
+{
     testAlu(instruction, exe);
 }
 
-void testU(InstructionPtr &instruction, Executor &exe){
+void testU(InstructionPtr &instruction, Executor &exe)
+{
     exe.Execute(instruction, IP);
     CHECK_EQ(instruction->_nextIp, IP + 4);
 }
 
-void testBranch(InstructionPtr &instruction, Executor &exe){
+void testBranch(InstructionPtr &instruction, Executor &exe)
+{
     instruction->_src1Val = SRCVAL1;
     instruction->_src2Val = SRCVAL2;
     exe.Execute(instruction, IP);
 }
 
-void testUJ(InstructionPtr &instruction, Executor &exe){
+void testUJ(InstructionPtr &instruction, Executor &exe)
+{
     exe.Execute(instruction, IP);
     CHECK_EQ(instruction->_data, IP + 4);
 }
