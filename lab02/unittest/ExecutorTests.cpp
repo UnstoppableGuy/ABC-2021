@@ -13,6 +13,8 @@ void testI(InstructionPtr &instruction, Executor &exe);
 void testU(InstructionPtr &instruction, Executor &exe);
 void testBranch(InstructionPtr &instruction, Executor &exe);
 void testUJ(InstructionPtr &instruction, Executor &exe);
+void testAluSub(InstructionPtr &instruction, Executor &exe);
+void testRSub(InstructionPtr &instruction, Executor &exe);
 
 TEST_SUITE("Executor")
 {
@@ -265,7 +267,7 @@ TEST_SUITE("Executor")
         SUBCASE("SUB_22")
         {
             //constexpr Word SUB = 0b0100000 | 00011 | 00001 | 000 | 01111 | 0110011;
-            Word sub = ((((((((0b0100000 << 5) + 0b00011) << 5) + 0b00001 << 8) + 0b01111) << 7) + 0b0110011));
+            Word sub = ((((((((0b0100000 << 5) + 0b1100) << 5) + 0b0111 << 8) + 0b0101) << 7) + 0b0110011));
             auto instruction = _decoder.Decode(sub);
             testR(instruction, _exe);
             CHECK_EQ(instruction->_data, SRCVAL1 - SRCVAL2);
@@ -284,6 +286,20 @@ void testAlu(InstructionPtr &instruction, Executor &exe)
 void testR(InstructionPtr &instruction, Executor &exe)
 {
     instruction->_src2Val = SRCVAL2;
+    testAlu(instruction, exe);
+}
+
+void testAluSub(InstructionPtr &instruction, Executor &exe)
+{
+    instruction->_src1Val = 7;
+    exe.Execute(instruction, IP);
+
+    CHECK_EQ(instruction->_nextIp, IP + 4);
+}
+
+void testRSub(InstructionPtr &instruction, Executor &exe)
+{
+    instruction->_src2Val = 12;
     testAlu(instruction, exe);
 }
 

@@ -9,6 +9,8 @@ void testR(InstructionPtr &instruction);
 void testU(InstructionPtr &instruction);
 void testUJ(InstructionPtr &instruction);
 void testAlu(InstructionPtr &instruction);
+void testAluSub(InstructionPtr &instruction);
+void testRSub(InstructionPtr &instruction);
 
 TEST_SUITE("Decoder")
 {
@@ -260,9 +262,10 @@ TEST_SUITE("Decoder")
     {
         SUBCASE("SUB_22")
         {
-            Word sub = ((((((((0b0100000 << 5) + 0b00011) << 5) + 0b00001 << 8) + 0b01111) << 7) + 0b0110011));;
+            //Word sub = ((((((((0b0100000 << 5) + 0b00011) << 5) + 0b00001 << 8) + 0b01111) << 7) + 0b0110011));
+            Word sub = ((((((((0b0100000 << 5) + 0b1100) << 5) + 0b0111 << 8) + 0b0101) << 7) + 0b0110011));
             auto instruction = _decoder.Decode(sub);
-            testR(instruction);
+            testRSub(instruction);
             CHECK(instruction->_aluFunc == AluFunc::Sub);
         }
     }
@@ -305,4 +308,17 @@ void testAlu(InstructionPtr &instruction)
     CHECK(instruction->_src1.value() == 1);
     CHECK(instruction->_dst.value() == 15);
     CHECK(instruction->_type == IType::Alu);
+}
+
+void testAluSub(InstructionPtr &instruction)
+{
+    CHECK(instruction->_src1.value() == 7);
+    CHECK(instruction->_dst.value() == 5);
+    CHECK(instruction->_type == IType::Alu);
+}
+
+void testRSub(InstructionPtr &instruction)
+{
+    testAluSub(instruction);
+    CHECK(instruction->_src2.value() == 12);
 }
