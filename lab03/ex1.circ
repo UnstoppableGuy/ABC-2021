@@ -375,16 +375,37 @@ end TCL_Generic;
     <comp lib="8" loc="(470,108)" name="Text">
       <a name="text" val="PUT CIRCUITRY HERE"/>
     </comp>
-    <comp loc="(410,130)" name="NAND1"/>
-    <comp loc="(410,200)" name="NAND1"/>
-    <comp loc="(410,270)" name="NAND1"/>
-    <comp loc="(410,340)" name="NAND1"/>
+    <comp loc="(430,140)" name="MUX2"/>
+    <comp loc="(440,280)" name="MUX2"/>
+    <comp loc="(640,300)" name="MUX2"/>
     <wire from="(140,130)" to="(300,130)"/>
     <wire from="(140,200)" to="(300,200)"/>
     <wire from="(140,270)" to="(300,270)"/>
     <wire from="(140,340)" to="(300,340)"/>
     <wire from="(140,410)" to="(190,410)"/>
     <wire from="(140,460)" to="(190,460)"/>
-    <wire from="(690,300)" to="(700,300)"/>
+    <wire from="(220,410)" to="(310,410)"/>
+    <wire from="(220,460)" to="(490,460)"/>
+    <wire from="(300,130)" to="(300,140)"/>
+    <wire from="(300,140)" to="(310,140)"/>
+    <wire from="(300,160)" to="(300,200)"/>
+    <wire from="(300,160)" to="(310,160)"/>
+    <wire from="(300,270)" to="(300,280)"/>
+    <wire from="(300,280)" to="(320,280)"/>
+    <wire from="(300,300)" to="(300,340)"/>
+    <wire from="(300,300)" to="(320,300)"/>
+    <wire from="(310,180)" to="(310,410)"/>
+    <wire from="(310,410)" to="(320,410)"/>
+    <wire from="(320,320)" to="(320,410)"/>
+    <wire from="(430,140)" to="(460,140)"/>
+    <wire from="(440,280)" to="(510,280)"/>
+    <wire from="(460,140)" to="(460,210)"/>
+    <wire from="(460,210)" to="(520,210)"/>
+    <wire from="(490,340)" to="(490,460)"/>
+    <wire from="(490,340)" to="(520,340)"/>
+    <wire from="(510,280)" to="(510,320)"/>
+    <wire from="(510,320)" to="(520,320)"/>
+    <wire from="(520,210)" to="(520,300)"/>
+    <wire from="(640,300)" to="(700,300)"/>
   </circuit>
 </project>
