@@ -1,1 +1,4 @@
 *.o
+lab03/.vscode/settings.json
+lab03/main
+lab03/main.cpp
