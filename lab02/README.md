@@ -34,8 +34,8 @@ cd build
 cmake ..
 make -j8
 cd ..
-unittest/Doctest_tests_run # запустить юнит-тесты
-./test.sh build/risсv_sim # запустить симулятор
+build/unittest/Doctest_tests_run # запустить юнит-тесты
+./test.sh build/src/risсv_sim # запустить симулятор
 ```
 
 ### Задача.
@@ -50,7 +50,7 @@ unittest/Doctest_tests_run # запустить юнит-тесты
 
 Реализовав `Executor::Execute()` и `Cpu::ProcessInstruction()`, у вас должен получиться готовый функциональный симулятор, который может исполнять небольшие программы. Для тестирования работы вам надо запустить bash-скрипт `test.sh` и через командную строку передать путь к исполняемому файлу симулятора. Пример:
 ```
-test.sh cmake-build-debug/riscv-sim
+test.sh build/src/riscv_sim
 ```
 
 Так же должны выполняться все юнит-тесты, которые запускаяются следующим образом:

@@ -46,5 +46,4 @@ for test_name in ${asm_tests[@]}; do
 
 	# run test
     ${exe_file} > ${log_dir}/${test_name}.log  # run bsim, redirect outputs to log
-    sleep ${wait_time} # wait bsim to setup
 done
