@@ -35,7 +35,7 @@ cmake ..
 make -j8
 cd ..
 build/unittest/Doctest_tests_run # запустить юнит-тесты
-./test.sh build/src/risсv_sim # запустить симулятор
+./test.sh build/src/riscv_sim # запустить симулятор
 ```
 
 ### Задача.
