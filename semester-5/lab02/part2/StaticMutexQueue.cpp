@@ -19,7 +19,7 @@ void StaticMutexQueue::push(uint8_t val)
     q[_pushIndex % _size] = val;
     _pushIndex++;
     _elementsCount++;
-    _conditionPop.notify_one();
+    _conditionPop.notify_all();
 }
 
 bool StaticMutexQueue::pop(uint8_t& val)
@@ -31,7 +31,7 @@ bool StaticMutexQueue::pop(uint8_t& val)
     q[_popIndex % _size] = 0;
     _popIndex++;
     _elementsCount--;
-    _conditionPush.notify_one();
+    _conditionPush.notify_all();
     return true;
 }
 
