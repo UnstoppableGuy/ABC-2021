@@ -3,29 +3,31 @@
 #include <omp.h>
 #include <cassert>
 
-const int length = 8192;
-//const int chunk = 16;
+const long long length = 25000;
+const long long chunk = 16;
 
-double matrix[length * length];
-double vector[length];
-double matrix_parallel[length * length];
-double matrix_series[length * length];
+int8_t matrix[length * length];
+int8_t vector[length];
+int8_t matrix_parallel[length * length];
+int8_t matrix_series[length * length];
+
 
 void createMatrix() {
-	for (int i = 0; i < length; i++)
-		for (int j = 0; j < length; j++)
+	for (long long i = 0; i < length; i++)
+		for (long long j = 0; j < length; j++)
 			matrix[i * length + j] = rand();
 }
 
 void createVector() {
-	for (int i = 0; i < length; i++)
+	for (long long i = 0; i < length; i++)
 		vector[i] = rand();
 }
 
 int main() {
+
 	//for (size_t temp = 0; temp < 20; temp++)
 	//{
-		int i = 0, j = 0, k = 0;
+		long long i = 0, j = 0, k = 0;
 		createMatrix();
 		createVector();
 
@@ -34,7 +36,7 @@ int main() {
 #pragma omp parallel for private(i,k) schedule(static)
 		for (i = 0; i < length; i++) {
 			for (k = 0; k < length; k++) {
-				matrix_parallel[i * length + k] = matrix[i * length + k] * vector[k];
+				matrix_parallel[i * length + k] += matrix[i * length + k] * vector[k];
 			}
 		}
 		auto end_time = std::chrono::steady_clock::now();
@@ -45,7 +47,7 @@ int main() {
 		start_time = std::chrono::steady_clock::now();
 		for (i = 0; i < length; i++) {
 			for (k = 0; k < length; k++) {
-				matrix_series[i * length + k] = matrix[i * length + k] * vector[k];
+				matrix_series[i * length + k] += matrix[i * length + k] * vector[k];
 			}
 		}
 
@@ -54,6 +56,10 @@ int main() {
 		std::cout << "Running time of the sequential algorithm: " << (double)time.count() / 1000 << std::endl;
 
 		for (i = 0; i < length; i++)
-			assert(matrix_parallel[i] == matrix_series[i]);
+			if (matrix_parallel[i] != matrix_series[i]) {
+				std::cout << "Error in calculating" << std::endl;
+				return 404;
+			}
+				
 	//}
 }
